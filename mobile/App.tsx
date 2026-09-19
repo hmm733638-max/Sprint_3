@@ -1,20 +1,16 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+
+import { AppNavigator } from './src/navigation/AppNavigator';
+
+import { AppThemeProvider } from './src/shared/theme/AppThemeProvider';
+import { defaultTheme } from './src/shared/theme/defaultTheme';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Hola</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaProvider>
+      <AppThemeProvider theme={defaultTheme}>
+        <AppNavigator />
+      </AppThemeProvider>
+    </SafeAreaProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
