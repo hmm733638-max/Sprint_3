@@ -1,29 +1,80 @@
+import { useEffect } from 'react';
+
 import { NavigationContainer } from '@react-navigation/native';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { BootstrapScreen } from '../presentation/bootstrap/screens/BootstrapScreen';
+import { AuthPresentationDependencies } from '../app/composition/AuthPresentationDependencies';
+
+import { LoginScreen } from '../presentation/auth/screens/LoginScreen';
+
+import { useViewModelState } from '../presentation/common/hooks/useViewModelState';
+
+import { SessionLoadingScreen } from '../presentation/session/screens/SessionLoadingScreen';
+
 import { useAppTheme } from '../shared/theme/useAppTheme';
 
+import { AuthenticatedNavigator } from './AuthenticatedNavigator';
+
 import { createNavigationTheme } from './createNavigationTheme';
+
 import { RootStackParamList } from './NavigationTypes';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-export function AppNavigator() {
+interface AppNavigatorProps {
+  readonly auth: AuthPresentationDependencies;
+}
+
+export function AppNavigator({ auth }: AppNavigatorProps) {
   const theme = useAppTheme();
 
   const navigationTheme = createNavigationTheme(theme);
 
+  const sessionState = useViewModelState(auth.sessionViewModel);
+
+  useEffect(() => {
+    void auth.sessionViewModel.restore();
+  }, [auth.sessionViewModel]);
+
   return (
     <NavigationContainer theme={navigationTheme}>
       <Stack.Navigator
-        initialRouteName="Bootstrap"
         screenOptions={{
           headerShown: false,
+          animation: 'fade',
         }}
       >
-        <Stack.Screen name="Bootstrap" component={BootstrapScreen} />
+        {sessionState.status === 'checking' ? (
+          <Stack.Screen name="SessionLoading" component={SessionLoadingScreen} />
+        ) : null}
+
+        {sessionState.status === 'unauthenticated' ? (
+          <Stack.Screen name="Login">
+            {() => (
+              <LoginScreen
+                viewModel={auth.loginViewModel}
+                onAuthenticated={(session) => {
+                  auth.sessionViewModel.setAuthenticated(session);
+                }}
+              />
+            )}
+          </Stack.Screen>
+        ) : null}
+
+        {sessionState.status === 'authenticated' ? (
+          <Stack.Screen name="Authenticated">
+            {() => (
+              <AuthenticatedNavigator
+                session={sessionState.session}
+                logoutViewModel={auth.logoutViewModel}
+                onLogoutCompleted={() => {
+                  auth.sessionViewModel.clearSession();
+                }}
+              />
+            )}
+          </Stack.Screen>
+        ) : null}
       </Stack.Navigator>
     </NavigationContainer>
   );
