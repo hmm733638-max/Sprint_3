@@ -5,6 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { AuthPresentationDependencies } from '../app/composition/AuthPresentationDependencies';
+import { ProductPresentationDependencies } from '../app/composition/ProductPresentationDependencies';
 
 import { LoginScreen } from '../presentation/auth/screens/LoginScreen';
 
@@ -24,9 +25,11 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 interface AppNavigatorProps {
   readonly auth: AuthPresentationDependencies;
+
+  readonly products: ProductPresentationDependencies;
 }
 
-export function AppNavigator({ auth }: AppNavigatorProps) {
+export function AppNavigator({ auth, products }: AppNavigatorProps) {
   const theme = useAppTheme();
 
   const navigationTheme = createNavigationTheme(theme);
@@ -42,6 +45,7 @@ export function AppNavigator({ auth }: AppNavigatorProps) {
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
+
           animation: 'fade',
         }}
       >
@@ -68,6 +72,8 @@ export function AppNavigator({ auth }: AppNavigatorProps) {
               <AuthenticatedNavigator
                 session={sessionState.session}
                 logoutViewModel={auth.logoutViewModel}
+                catalogViewModel={products.catalogViewModel}
+                productDetailViewModel={products.productDetailViewModel}
                 onLogoutCompleted={() => {
                   auth.sessionViewModel.clearSession();
                 }}

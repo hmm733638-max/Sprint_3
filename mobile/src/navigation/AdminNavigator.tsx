@@ -1,10 +1,14 @@
-import { Text } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { UserSession } from '../domain/entities/UserSession';
 
 import { FeaturePlaceholderScreen } from '../presentation/common/screens/FeaturePlaceholderScreen';
+
+import { CatalogScreen } from '../presentation/products/screens/CatalogScreen';
+
+import { CatalogViewModel } from '../presentation/products/viewmodels/CatalogViewModel';
 
 import { ProfileScreen } from '../presentation/profile/screens/ProfileScreen';
 
@@ -21,12 +25,18 @@ interface AdminNavigatorProps {
 
   readonly logoutViewModel: LogoutViewModel;
 
+  readonly catalogViewModel: CatalogViewModel;
+
+  readonly onProductPress: (productId: number) => void;
+
   readonly onLogoutCompleted: () => void;
 }
 
 export function AdminNavigator({
   session,
   logoutViewModel,
+  catalogViewModel,
+  onProductPress,
   onLogoutCompleted,
 }: AdminNavigatorProps) {
   const theme = useAppTheme();
@@ -65,22 +75,28 @@ export function AdminNavigator({
         options={{
           title: 'Catálogo',
 
-          tabBarIcon: ({ color }) => (
-            <Text
-              style={{
-                color,
-                fontSize: 20,
-              }}
-            >
-              🏠
-            </Text>
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="storefront-outline" color={color} size={size} />
+          ),
+        }}
+      >
+        {() => <CatalogScreen viewModel={catalogViewModel} onProductPress={onProductPress} />}
+      </Tab.Screen>
+
+      <Tab.Screen
+        name="AdminAddProduct"
+        options={{
+          title: 'Agregar',
+
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="add-circle-outline" color={color} size={size} />
           ),
         }}
       >
         {() => (
           <FeaturePlaceholderScreen
-            title="Catálogo"
-            description="Aquí se integrará el catálogo general de productos."
+            title="Agregar producto"
+            description="Aquí se implementará el registro de productos."
           />
         )}
       </Tab.Screen>
@@ -90,22 +106,51 @@ export function AdminNavigator({
         options={{
           title: 'Inventario',
 
-          tabBarIcon: ({ color }) => (
-            <Text
-              style={{
-                color,
-                fontSize: 20,
-              }}
-            >
-              📦
-            </Text>
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="list-outline" color={color} size={size} />
           ),
         }}
       >
         {() => (
           <FeaturePlaceholderScreen
             title="Inventario"
-            description="Aquí se integrarán las funciones de crear, editar y eliminar productos de US06, US07 y US08."
+            description="Aquí el administrador podrá gestionar productos en formato de lista."
+          />
+        )}
+      </Tab.Screen>
+
+      <Tab.Screen
+        name="AdminUsers"
+        options={{
+          title: 'Usuarios',
+
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="people-outline" color={color} size={size} />
+          ),
+        }}
+      >
+        {() => (
+          <FeaturePlaceholderScreen
+            title="Usuarios"
+            description="Aquí se mostrará la administración de usuarios."
+          />
+        )}
+      </Tab.Screen>
+
+      <Tab.Screen
+        name="AdminAuditCart"
+        options={{
+          title: 'Auditoría',
+
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="clipboard-outline" color={color} size={size} />
+          ),
+        }}
+      >
+        {() => (
+          <FeaturePlaceholderScreen
+            title="Auditoría"
+            description="Aquí se mostrará la auditoría de carritos."
           />
         )}
       </Tab.Screen>
@@ -115,15 +160,8 @@ export function AdminNavigator({
         options={{
           title: 'Perfil',
 
-          tabBarIcon: ({ color }) => (
-            <Text
-              style={{
-                color,
-                fontSize: 20,
-              }}
-            >
-              👤
-            </Text>
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="person-outline" color={color} size={size} />
           ),
         }}
       >

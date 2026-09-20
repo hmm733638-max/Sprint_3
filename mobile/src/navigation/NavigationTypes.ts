@@ -6,8 +6,16 @@ export type RootStackParamList = {
   Authenticated: undefined;
 };
 
+export type AuthenticatedStackParamList = {
+  RoleTabs: undefined;
+
+  ProductDetail: {
+    readonly productId: number;
+  };
+};
+
 export type ClientTabParamList = {
-  ClientHome: undefined;
+  ClientCatalog: undefined;
 
   ClientCart: undefined;
 
@@ -17,7 +25,13 @@ export type ClientTabParamList = {
 export type AdminTabParamList = {
   AdminCatalog: undefined;
 
+  AdminAddProduct: undefined;
+
   AdminInventory: undefined;
+
+  AdminUsers: undefined;
+
+  AdminAuditCart: undefined;
 
   AdminProfile: undefined;
 };
@@ -27,7 +41,7 @@ export type AuditorTabParamList = {
 
   AuditorUsers: undefined;
 
-  AuditorAudit: undefined;
+  AuditorCartAudit: undefined;
 
   AuditorProfile: undefined;
 };

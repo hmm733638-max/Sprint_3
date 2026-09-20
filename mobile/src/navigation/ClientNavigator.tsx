@@ -1,10 +1,14 @@
-import { Text } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { UserSession } from '../domain/entities/UserSession';
 
 import { FeaturePlaceholderScreen } from '../presentation/common/screens/FeaturePlaceholderScreen';
+
+import { CatalogScreen } from '../presentation/products/screens/CatalogScreen';
+
+import { CatalogViewModel } from '../presentation/products/viewmodels/CatalogViewModel';
 
 import { ProfileScreen } from '../presentation/profile/screens/ProfileScreen';
 
@@ -21,19 +25,25 @@ interface ClientNavigatorProps {
 
   readonly logoutViewModel: LogoutViewModel;
 
+  readonly catalogViewModel: CatalogViewModel;
+
+  readonly onProductPress: (productId: number) => void;
+
   readonly onLogoutCompleted: () => void;
 }
 
 export function ClientNavigator({
   session,
   logoutViewModel,
+  catalogViewModel,
+  onProductPress,
   onLogoutCompleted,
 }: ClientNavigatorProps) {
   const theme = useAppTheme();
 
   return (
     <Tab.Navigator
-      initialRouteName="ClientHome"
+      initialRouteName="ClientCatalog"
       screenOptions={{
         headerShown: false,
 
@@ -61,28 +71,16 @@ export function ClientNavigator({
       }}
     >
       <Tab.Screen
-        name="ClientHome"
+        name="ClientCatalog"
         options={{
-          title: 'Inicio',
+          title: 'Catálogo',
 
-          tabBarIcon: ({ color }) => (
-            <Text
-              style={{
-                color,
-                fontSize: 20,
-              }}
-            >
-              🏠
-            </Text>
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="storefront-outline" color={color} size={size} />
           ),
         }}
       >
-        {() => (
-          <FeaturePlaceholderScreen
-            title="Inicio"
-            description="Aquí se mostrará el catálogo de productos cuando se integre US03, US04 y US05."
-          />
-        )}
+        {() => <CatalogScreen viewModel={catalogViewModel} onProductPress={onProductPress} />}
       </Tab.Screen>
 
       <Tab.Screen
@@ -90,22 +88,15 @@ export function ClientNavigator({
         options={{
           title: 'Carrito',
 
-          tabBarIcon: ({ color }) => (
-            <Text
-              style={{
-                color,
-                fontSize: 20,
-              }}
-            >
-              🛒
-            </Text>
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="bag-handle-outline" color={color} size={size} />
           ),
         }}
       >
         {() => (
           <FeaturePlaceholderScreen
             title="Mi carrito"
-            description="Aquí se integrará el carrito desarrollado en US09 y US10."
+            description="Aquí se integrará el carrito de compras en US09 y US10."
           />
         )}
       </Tab.Screen>
@@ -115,15 +106,8 @@ export function ClientNavigator({
         options={{
           title: 'Perfil',
 
-          tabBarIcon: ({ color }) => (
-            <Text
-              style={{
-                color,
-                fontSize: 20,
-              }}
-            >
-              👤
-            </Text>
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="person-outline" color={color} size={size} />
           ),
         }}
       >

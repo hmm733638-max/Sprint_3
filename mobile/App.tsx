@@ -9,6 +9,7 @@ import { defaultAppConfig } from './src/core/config/DefaultAppConfig';
 import { AppNavigator } from './src/navigation/AppNavigator';
 
 import { AppThemeProvider } from './src/shared/theme/AppThemeProvider';
+
 import { defaultTheme } from './src/shared/theme/defaultTheme';
 
 export default function App() {
@@ -17,7 +18,7 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <AppThemeProvider theme={defaultTheme}>
-        <AppNavigator auth={composition.auth} />
+        <AppNavigator auth={composition.auth} products={composition.products} />
       </AppThemeProvider>
     </SafeAreaProvider>
   );
