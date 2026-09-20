@@ -1,10 +1,14 @@
-import { Text } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { UserSession } from '../domain/entities/UserSession';
 
 import { FeaturePlaceholderScreen } from '../presentation/common/screens/FeaturePlaceholderScreen';
+
+import { CatalogScreen } from '../presentation/products/screens/CatalogScreen';
+
+import { CatalogViewModel } from '../presentation/products/viewmodels/CatalogViewModel';
 
 import { ProfileScreen } from '../presentation/profile/screens/ProfileScreen';
 
@@ -21,12 +25,18 @@ interface AuditorNavigatorProps {
 
   readonly logoutViewModel: LogoutViewModel;
 
+  readonly catalogViewModel: CatalogViewModel;
+
+  readonly onProductPress: (productId: number) => void;
+
   readonly onLogoutCompleted: () => void;
 }
 
 export function AuditorNavigator({
   session,
   logoutViewModel,
+  catalogViewModel,
+  onProductPress,
   onLogoutCompleted,
 }: AuditorNavigatorProps) {
   const theme = useAppTheme();
@@ -65,24 +75,12 @@ export function AuditorNavigator({
         options={{
           title: 'Catálogo',
 
-          tabBarIcon: ({ color }) => (
-            <Text
-              style={{
-                color,
-                fontSize: 20,
-              }}
-            >
-              🏠
-            </Text>
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="storefront-outline" color={color} size={size} />
           ),
         }}
       >
-        {() => (
-          <FeaturePlaceholderScreen
-            title="Catálogo"
-            description="Aquí se integrará la consulta de productos."
-          />
-        )}
+        {() => <CatalogScreen viewModel={catalogViewModel} onProductPress={onProductPress} />}
       </Tab.Screen>
 
       <Tab.Screen
@@ -90,47 +88,33 @@ export function AuditorNavigator({
         options={{
           title: 'Usuarios',
 
-          tabBarIcon: ({ color }) => (
-            <Text
-              style={{
-                color,
-                fontSize: 20,
-              }}
-            >
-              👥
-            </Text>
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="people-outline" color={color} size={size} />
           ),
         }}
       >
         {() => (
           <FeaturePlaceholderScreen
             title="Usuarios"
-            description="Aquí se integrará la consulta de usuarios correspondiente a las historias de auditoría."
+            description="Aquí el auditor podrá consultar la información correspondiente de usuarios."
           />
         )}
       </Tab.Screen>
 
       <Tab.Screen
-        name="AuditorAudit"
+        name="AuditorCartAudit"
         options={{
           title: 'Auditoría',
 
-          tabBarIcon: ({ color }) => (
-            <Text
-              style={{
-                color,
-                fontSize: 20,
-              }}
-            >
-              📋
-            </Text>
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="clipboard-outline" color={color} size={size} />
           ),
         }}
       >
         {() => (
           <FeaturePlaceholderScreen
             title="Auditoría"
-            description="Aquí se integrará la auditoría de carritos."
+            description="Aquí se mostrará la auditoría de carritos."
           />
         )}
       </Tab.Screen>
@@ -140,15 +124,8 @@ export function AuditorNavigator({
         options={{
           title: 'Perfil',
 
-          tabBarIcon: ({ color }) => (
-            <Text
-              style={{
-                color,
-                fontSize: 20,
-              }}
-            >
-              👤
-            </Text>
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="person-outline" color={color} size={size} />
           ),
         }}
       >
