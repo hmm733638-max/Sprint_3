@@ -1,14 +1,10 @@
 import { Ionicons } from '@expo/vector-icons';
-
 import { Image, Pressable, Text, View } from 'react-native';
-
 import { Product } from '../../../domain/entities/Product';
-
 import { useAppTheme } from '../../../shared/theme/useAppTheme';
 
 interface ProductCardProps {
   readonly product: Product;
-
   readonly onPress: (productId: number) => void;
 }
 
@@ -24,62 +20,39 @@ export function ProductCard({ product, onPress }: ProductCardProps) {
       }}
       style={({ pressed }) => ({
         flex: 1,
-
         overflow: 'hidden',
-
         borderRadius: theme.radii.card,
-
         borderWidth: 1,
         borderColor: theme.colors.border,
-
         backgroundColor: theme.colors.surface,
-
         opacity: pressed ? 0.85 : 1,
       })}
     >
       <View
         style={{
           width: '100%',
-          aspectRatio: 1,
-
+          height: 190,
           padding: theme.spacing.md,
-
           alignItems: 'center',
           justifyContent: 'center',
-
           backgroundColor: theme.colors.surfaceMuted,
         }}
       >
         <Image
-          source={{
-            uri: product.imageUrl,
-          }}
+          source={{ uri: product.imageUrl }}
           resizeMode="contain"
-          style={{
-            width: '90%',
-            height: '90%',
-          }}
+          style={{ width: '78%', height: '78%' }}
         />
       </View>
 
-      <View
-        style={{
-          padding: theme.spacing.md,
-
-          gap: theme.spacing.xs,
-        }}
-      >
+      <View style={{ padding: theme.spacing.md, gap: theme.spacing.xs }}>
         <Text
           numberOfLines={2}
           style={{
             minHeight: 42,
-
             color: theme.colors.textPrimary,
-
             fontSize: theme.typography.fontSize.sm,
-
             lineHeight: theme.typography.lineHeight.sm,
-
             fontWeight: theme.typography.fontWeight.semibold,
           }}
         >
@@ -90,7 +63,6 @@ export function ProductCard({ product, onPress }: ProductCardProps) {
           numberOfLines={1}
           style={{
             color: theme.colors.textSecondary,
-
             fontSize: theme.typography.fontSize.caption,
           }}
         >
@@ -100,7 +72,6 @@ export function ProductCard({ product, onPress }: ProductCardProps) {
         <View
           style={{
             marginTop: theme.spacing.xs,
-
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -109,9 +80,7 @@ export function ProductCard({ product, onPress }: ProductCardProps) {
           <Text
             style={{
               color: theme.colors.brandPrimary,
-
               fontSize: theme.typography.fontSize.lg,
-
               fontWeight: theme.typography.fontWeight.bold,
             }}
           >
@@ -122,12 +91,9 @@ export function ProductCard({ product, onPress }: ProductCardProps) {
             style={{
               width: 34,
               height: 34,
-
               alignItems: 'center',
               justifyContent: 'center',
-
               borderRadius: theme.radii.pill,
-
               backgroundColor: theme.colors.brandAccentSoft,
             }}
           >
