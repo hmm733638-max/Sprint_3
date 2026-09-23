@@ -1,33 +1,24 @@
 import { Ionicons } from '@expo/vector-icons';
-
 import { useEffect } from 'react';
-
 import { FlatList, Text, View } from 'react-native';
-
 import { AppInput } from '../../../shared/components/AppInput';
 import { ScreenContainer } from '../../../shared/components/ScreenContainer';
-
 import { useAppTheme } from '../../../shared/theme/useAppTheme';
-
 import { useViewModelState } from '../../common/hooks/useViewModelState';
-
 import { CatalogEmptyState } from '../components/CatalogEmptyState';
 import { CatalogErrorState } from '../components/CatalogErrorState';
 import { CatalogSkeleton } from '../components/CatalogSkeleton';
 import { CategoryFilter } from '../components/CategoryFilter';
 import { ProductCard } from '../components/ProductCard';
-
 import { CatalogViewModel } from '../viewmodels/CatalogViewModel';
 
 interface CatalogScreenProps {
   readonly viewModel: CatalogViewModel;
-
   readonly onProductPress: (productId: number) => void;
 }
 
 export function CatalogScreen({ viewModel, onProductPress }: CatalogScreenProps) {
   const theme = useAppTheme();
-
   const state = useViewModelState(viewModel);
 
   useEffect(() => {
@@ -40,21 +31,16 @@ export function CatalogScreen({ viewModel, onProductPress }: CatalogScreenProps)
 
   return (
     <ScreenContainer padded={false}>
-      <View
-        style={{
-          flex: 1,
-        }}
-      >
+      <View style={{ flex: 1 }}>
         <View
           style={{
+            width: '100%',
+            maxWidth: 1000,
+            alignSelf: 'center',
             paddingHorizontal: theme.spacing.md,
-
             paddingTop: theme.spacing.sm,
-
             paddingBottom: theme.spacing.md,
-
             gap: theme.spacing.md,
-
             backgroundColor: theme.colors.background,
           }}
         >
@@ -63,23 +49,17 @@ export function CatalogScreen({ viewModel, onProductPress }: CatalogScreenProps)
               accessibilityRole="header"
               style={{
                 color: theme.colors.textPrimary,
-
                 fontSize: theme.typography.fontSize.xxl,
-
                 lineHeight: theme.typography.lineHeight.xxl,
-
                 fontWeight: theme.typography.fontWeight.bold,
               }}
             >
               Changarrito
             </Text>
-
             <Text
               style={{
                 marginTop: theme.spacing.xxs,
-
                 color: theme.colors.textSecondary,
-
                 fontSize: theme.typography.fontSize.sm,
               }}
             >
@@ -112,11 +92,7 @@ export function CatalogScreen({ viewModel, onProductPress }: CatalogScreenProps)
         </View>
 
         {state.status === 'loading' ? (
-          <View
-            style={{
-              padding: theme.spacing.md,
-            }}
-          >
+          <View style={{ padding: theme.spacing.md }}>
             <CatalogSkeleton />
           </View>
         ) : isError ? (
@@ -135,16 +111,13 @@ export function CatalogScreen({ viewModel, onProductPress }: CatalogScreenProps)
             keyExtractor={(product) => String(product.id)}
             showsVerticalScrollIndicator={false}
             keyboardDismissMode="on-drag"
+            style={{ width: '100%', maxWidth: 1000, alignSelf: 'center' }}
             contentContainerStyle={{
               padding: theme.spacing.md,
-
               paddingBottom: theme.spacing.xxxl,
-
               gap: theme.spacing.md,
             }}
-            columnWrapperStyle={{
-              gap: theme.spacing.md,
-            }}
+            columnWrapperStyle={{ gap: theme.spacing.md }}
             renderItem={({ item }) => <ProductCard product={item} onPress={onProductPress} />}
           />
         )}

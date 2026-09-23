@@ -1,18 +1,12 @@
 import { HttpError } from '../../core/errors/HttpError';
 import { NetworkError } from '../../core/errors/NetworkError';
 import { TimeoutError } from '../../core/errors/TimeoutError';
-
 import { Product } from '../../domain/entities/Product';
-
 import { ProductNotFoundError } from '../../domain/errors/ProductNotFoundError';
 import { ProductsUnavailableError } from '../../domain/errors/ProductsUnavailableError';
-
 import { ProductRepository } from '../../domain/repositories/ProductRepository';
-
 import { ProductRemoteDataSource } from '../datasources/remote/products/ProductRemoteDataSource';
-
 import { InvalidRemoteResponseError } from '../errors/InvalidRemoteResponseError';
-
 import { ProductMapper } from '../mappers/ProductMapper';
 
 export class FakeStoreProductRepository implements ProductRepository {
@@ -21,7 +15,6 @@ export class FakeStoreProductRepository implements ProductRepository {
   async findAll(): Promise<readonly Product[]> {
     try {
       const products = await this.remoteDataSource.findAll();
-
       return products.map((product) => ProductMapper.toDomain(product));
     } catch (error: unknown) {
       this.handleUnavailableError(error);
@@ -61,7 +54,6 @@ export class FakeStoreProductRepository implements ProductRepository {
   async findByCategory(category: string): Promise<readonly Product[]> {
     try {
       const products = await this.remoteDataSource.findByCategory(category);
-
       return products.map((product) => ProductMapper.toDomain(product));
     } catch (error: unknown) {
       this.handleUnavailableError(error);

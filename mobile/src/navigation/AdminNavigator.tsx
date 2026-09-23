@@ -1,34 +1,24 @@
 import { Ionicons } from '@expo/vector-icons';
-
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
 import { UserSession } from '../domain/entities/UserSession';
-
 import { FeaturePlaceholderScreen } from '../presentation/common/screens/FeaturePlaceholderScreen';
-
+import { CreateProductScreen } from '../presentation/inventory/screens/CreateProductScreen';
+import { CreateProductViewModel } from '../presentation/inventory/viewmodels/CreateProductViewModel';
 import { CatalogScreen } from '../presentation/products/screens/CatalogScreen';
-
 import { CatalogViewModel } from '../presentation/products/viewmodels/CatalogViewModel';
-
 import { ProfileScreen } from '../presentation/profile/screens/ProfileScreen';
-
 import { LogoutViewModel } from '../presentation/profile/viewmodels/LogoutViewModel';
-
 import { useAppTheme } from '../shared/theme/useAppTheme';
-
 import { AdminTabParamList } from './NavigationTypes';
 
 const Tab = createBottomTabNavigator<AdminTabParamList>();
 
 interface AdminNavigatorProps {
   readonly session: UserSession;
-
   readonly logoutViewModel: LogoutViewModel;
-
   readonly catalogViewModel: CatalogViewModel;
-
+  readonly createProductViewModel: CreateProductViewModel;
   readonly onProductPress: (productId: number) => void;
-
   readonly onLogoutCompleted: () => void;
 }
 
@@ -36,6 +26,7 @@ export function AdminNavigator({
   session,
   logoutViewModel,
   catalogViewModel,
+  createProductViewModel,
   onProductPress,
   onLogoutCompleted,
 }: AdminNavigatorProps) {
@@ -46,26 +37,17 @@ export function AdminNavigator({
       initialRouteName="AdminCatalog"
       screenOptions={{
         headerShown: false,
-
         tabBarActiveTintColor: theme.colors.brandAccent,
-
         tabBarInactiveTintColor: theme.colors.textMuted,
-
         tabBarStyle: {
           minHeight: theme.sizes.bottomTab.height,
-
           paddingTop: theme.spacing.xs,
-
           paddingBottom: theme.spacing.xs,
-
           backgroundColor: theme.colors.surface,
-
           borderTopColor: theme.colors.border,
         },
-
         tabBarLabelStyle: {
           fontSize: theme.typography.fontSize.xs,
-
           fontWeight: theme.typography.fontWeight.medium,
         },
       }}
@@ -74,7 +56,6 @@ export function AdminNavigator({
         name="AdminCatalog"
         options={{
           title: 'Catálogo',
-
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="storefront-outline" color={color} size={size} />
           ),
@@ -87,25 +68,18 @@ export function AdminNavigator({
         name="AdminAddProduct"
         options={{
           title: 'Agregar',
-
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="add-circle-outline" color={color} size={size} />
           ),
         }}
       >
-        {() => (
-          <FeaturePlaceholderScreen
-            title="Agregar producto"
-            description="Aquí se implementará el registro de productos."
-          />
-        )}
+        {() => <CreateProductScreen viewModel={createProductViewModel} />}
       </Tab.Screen>
 
       <Tab.Screen
         name="AdminInventory"
         options={{
           title: 'Inventario',
-
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="list-outline" color={color} size={size} />
           ),
@@ -123,7 +97,6 @@ export function AdminNavigator({
         name="AdminUsers"
         options={{
           title: 'Usuarios',
-
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="people-outline" color={color} size={size} />
           ),
@@ -141,7 +114,6 @@ export function AdminNavigator({
         name="AdminAuditCart"
         options={{
           title: 'Auditoría',
-
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="clipboard-outline" color={color} size={size} />
           ),
@@ -159,7 +131,6 @@ export function AdminNavigator({
         name="AdminProfile"
         options={{
           title: 'Perfil',
-
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="person-outline" color={color} size={size} />
           ),
