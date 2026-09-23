@@ -1,15 +1,10 @@
 import { NetworkError } from '../../core/errors/NetworkError';
 import { TimeoutError } from '../../core/errors/TimeoutError';
-
 import { User } from '../../domain/entities/User';
-
 import { AuthenticationUnavailableError } from '../../domain/errors/AuthenticationUnavailableError';
 import { UserNotFoundError } from '../../domain/errors/UserNotFoundError';
-
 import { UserRepository } from '../../domain/repositories/UserRepository';
-
 import { UserRemoteDataSource } from '../datasources/remote/users/UserRemoteDataSource';
-
 import { mapFakeStoreUserToDomain } from '../mappers/UserMapper';
 
 export class FakeStoreUserRepository implements UserRepository {
@@ -24,6 +19,20 @@ export class FakeStoreUserRepository implements UserRepository {
       }
 
       return mapFakeStoreUserToDomain(dto);
+    } catch (error: unknown) {
+      if (error instanceof NetworkError || error instanceof TimeoutError) {
+        throw new AuthenticationUnavailableError();
+      }
+
+      throw error;
+    }
+  }
+
+  async getUsers(): Promise<User[]> {
+    try {
+      const dtos = await this.remoteDataSource.getUsers();
+
+      return dtos.map(mapFakeStoreUserToDomain);
     } catch (error: unknown) {
       if (error instanceof NetworkError || error instanceof TimeoutError) {
         throw new AuthenticationUnavailableError();
