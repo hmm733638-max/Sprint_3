@@ -11,14 +11,17 @@ import { AuthenticatedNavigator } from './AuthenticatedNavigator';
 import { createNavigationTheme } from './createNavigationTheme';
 import { RootStackParamList } from './NavigationTypes';
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
+
+import { UsersViewModel } from '../presentation/users/viewmodels/UsersViewModel';const Stack = createNativeStackNavigator<RootStackParamList>();
 
 interface AppNavigatorProps {
   readonly auth: AuthPresentationDependencies;
   readonly products: ProductPresentationDependencies;
+
+  readonly usersViewModel: UsersViewModel;
 }
 
-export function AppNavigator({ auth, products }: AppNavigatorProps) {
+export function AppNavigator({ auth, products, usersViewModel }: AppNavigatorProps) {
   const theme = useAppTheme();
   const navigationTheme = createNavigationTheme(theme);
   const sessionState = useViewModelState(auth.sessionViewModel);
@@ -56,6 +59,7 @@ export function AppNavigator({ auth, products }: AppNavigatorProps) {
                 createProductViewModel={products.createProductViewModel}
                 editProductViewModel={products.editProductViewModel}
                 deleteProductViewModel={products.deleteProductViewModel}
+                usersViewModel={usersViewModel}
                 onLogoutCompleted={() => auth.sessionViewModel.clearSession()}
               />
             )}
