@@ -21,7 +21,6 @@ export default function App() {
     return new GetUsersUseCase(mockRepository);
   });
 
-
   const usersViewModel = useUsersViewModel(getUsersUseCase);
 
   return (
