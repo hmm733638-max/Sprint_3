@@ -20,7 +20,7 @@ export const useUsersViewModel = (getUsersUseCase: GetUsersUseCase): UsersViewMo
       const result = await getUsersUseCase.execute();
       setUsers(result);
       setError(null);
-    } catch (err) {
+    } catch (_err) {
       setError('Ocurrió un error al cargar los usuarios.');
     } finally {
       setLoading(false);
@@ -29,4 +29,3 @@ export const useUsersViewModel = (getUsersUseCase: GetUsersUseCase): UsersViewMo
 
   return { users, loading, error, loadUsers };
 };
-
