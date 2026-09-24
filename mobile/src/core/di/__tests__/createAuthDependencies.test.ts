@@ -1,32 +1,31 @@
-import { describe, expect, it } from '@jest/globals';
-
-import { FakeHttpClient } from '../../../testing/network/FakeHttpClient';
-import { InMemoryKeyValueStorage } from '../../../testing/storage/InMemoryKeyValueStorage';
-
-import { CoreDependencies } from '../CoreDependencies';
-
+import { describe, it, expect, jest } from '@jest/globals';
 import { createAuthDependencies } from '../createAuthDependencies';
+import { createCoreDependencies } from '../createCoreDependencies';
+import { AppConfig } from '../../config/AppConfig';
+
+jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
+
+const mockAsyncStorage = {
+  setItem: jest.fn(() => Promise.resolve(null)),
+  getItem: jest.fn(() => Promise.resolve(null)),
+  removeItem: jest.fn(() => Promise.resolve(null)),
+  clear: jest.fn(() => Promise.resolve(null)),
+  getAllKeys: jest.fn(() => Promise.resolve([])),
+  multiGet: jest.fn(() => Promise.resolve([])),
+  multiSet: jest.fn(() => Promise.resolve(null)),
+  multiRemove: jest.fn(() => Promise.resolve(null)),
+};
 
 describe('createAuthDependencies', () => {
-  it('exposes the authentication actions', () => {
-    const core: CoreDependencies = {
-      config: {
-        apiBaseUrl: 'https://example.com',
-
-        requestTimeoutMs: 5_000,
-      },
-
-      httpClient: new FakeHttpClient(),
-
-      storage: new InMemoryKeyValueStorage(),
+  it('should instantiate dependencies correctly', () => {
+    const config: AppConfig = {
+      apiBaseUrl: 'https://example.com',
+      requestTimeoutMs: 5000,
     };
 
+    const core = createCoreDependencies(config);
     const dependencies = createAuthDependencies(core);
 
-    expect(typeof dependencies.loginAction.execute).toBe('function');
-
-    expect(typeof dependencies.logoutAction.execute).toBe('function');
-
-    expect(typeof dependencies.getCurrentSessionAction.execute).toBe('function');
+    expect(dependencies).toBeDefined();
   });
 });

@@ -1,3 +1,7 @@
+import { CartItemDto } from '../../../dto/cart/CartItemDto';
+
 export interface CartLocalDataSource {
-  clear(): Promise<void>;
+  getCartItems(): Promise<CartItemDto[]>;
+  saveCartItems(items: CartItemDto[]): Promise<void>;
+  clearCart(): Promise<void>;
 }

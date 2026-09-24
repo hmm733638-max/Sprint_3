@@ -1,23 +1,20 @@
-import { describe, expect, it } from '@jest/globals';
-
+import { describe, it, expect, jest } from '@jest/globals';
+import { LocalCartCleanupRepository } from '../LocalCartCleanupRepository';
 import { CartLocalDataSource } from '../../datasources/local/cart/CartLocalDataSource';
 
-import { LocalCartCleanupRepository } from '../LocalCartCleanupRepository';
-
 describe('LocalCartCleanupRepository', () => {
-  it('clears the local cart', async () => {
-    let cleared = false;
+  it('should call clearCart on localDataSource', async () => {
+    const clearCartMock = jest.fn();
 
-    const localDataSource: CartLocalDataSource = {
-      async clear() {
-        cleared = true;
-      },
-    };
+    const mockLocalDataSource = {
+      getCartItems: jest.fn(),
+      saveCartItems: jest.fn(),
+      clearCart: clearCartMock,
+    } as unknown as CartLocalDataSource;
 
-    const repository = new LocalCartCleanupRepository(localDataSource);
-
+    const repository = new LocalCartCleanupRepository(mockLocalDataSource);
     await repository.clearCart();
 
-    expect(cleared).toBe(true);
+    expect(clearCartMock).toHaveBeenCalledTimes(1);
   });
 });

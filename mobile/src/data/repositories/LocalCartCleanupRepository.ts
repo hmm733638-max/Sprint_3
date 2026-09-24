@@ -1,11 +1,9 @@
-import { CartCleanupRepository } from '../../domain/repositories/CartCleanupRepository';
-
 import { CartLocalDataSource } from '../datasources/local/cart/CartLocalDataSource';
 
-export class LocalCartCleanupRepository implements CartCleanupRepository {
+export class LocalCartCleanupRepository {
   constructor(private readonly localDataSource: CartLocalDataSource) {}
 
-  clearCart(): Promise<void> {
-    return this.localDataSource.clear();
+  async clearCart(): Promise<void> {
+    return this.localDataSource.clearCart();
   }
 }
