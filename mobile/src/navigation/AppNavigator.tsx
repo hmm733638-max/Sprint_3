@@ -11,8 +11,8 @@ import { AuthenticatedNavigator } from './AuthenticatedNavigator';
 import { createNavigationTheme } from './createNavigationTheme';
 import { RootStackParamList } from './NavigationTypes';
 
-
-import { UsersViewModel } from '../presentation/users/viewmodels/UsersViewModel';const Stack = createNativeStackNavigator<RootStackParamList>();
+import { UsersViewModel } from '../presentation/users/viewmodels/UsersViewModel';
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 interface AppNavigatorProps {
   readonly auth: AuthPresentationDependencies;

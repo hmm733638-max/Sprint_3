@@ -7,7 +7,6 @@ interface UsersScreenProps {
 }
 
 export function UsersScreen({ viewModel }: UsersScreenProps) {
-
   useEffect(() => {
     void viewModel.loadUsers();
   }, [viewModel]);
@@ -21,7 +20,6 @@ export function UsersScreen({ viewModel }: UsersScreenProps) {
       </View>
     );
   }
-
 
   if (viewModel.error) {
     return (
@@ -41,11 +39,11 @@ export function UsersScreen({ viewModel }: UsersScreenProps) {
         renderItem={({ item }) => (
           <View style={{ padding: 16, borderBottomWidth: 1, borderBottomColor: '#eee' }}>
             <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
-  {item.firstName} {item.lastName}
-</Text>
-<Text style={{ color: '#666', marginTop: 4 }}>
-  {item.email || 'Sin correo registrado'}
-</Text>
+              {item.firstName} {item.lastName}
+            </Text>
+            <Text style={{ color: '#666', marginTop: 4 }}>
+              {item.email || 'Sin correo registrado'}
+            </Text>
             <Text style={{ color: '#666', marginTop: 4 }}>
               {item.email || 'Sin correo registrado'}
             </Text>
