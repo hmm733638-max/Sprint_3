@@ -13,6 +13,8 @@ import { AuditorNavigator } from './AuditorNavigator';
 import { ClientNavigator } from './ClientNavigator';
 import { AuthenticatedStackParamList } from './NavigationTypes';
 
+import { UsersViewModel } from '../presentation/users/viewmodels/UsersViewModel';
+
 const Stack = createNativeStackNavigator<AuthenticatedStackParamList>();
 
 interface AuthenticatedNavigatorProps {
@@ -23,6 +25,8 @@ interface AuthenticatedNavigatorProps {
   readonly createProductViewModel: CreateProductViewModel;
   readonly editProductViewModel: EditProductViewModel;
   readonly deleteProductViewModel: DeleteProductViewModel;
+
+  readonly usersViewModel: UsersViewModel;
   readonly onLogoutCompleted: () => void;
 }
 
@@ -34,6 +38,7 @@ export function AuthenticatedNavigator({
   createProductViewModel,
   editProductViewModel,
   deleteProductViewModel,
+  usersViewModel,
   onLogoutCompleted,
 }: AuthenticatedNavigatorProps) {
   return (
@@ -62,6 +67,7 @@ export function AuthenticatedNavigator({
                   session={session}
                   logoutViewModel={logoutViewModel}
                   catalogViewModel={catalogViewModel}
+                  usersViewModel={usersViewModel}
                   onProductPress={onProductPress}
                   onLogoutCompleted={onLogoutCompleted}
                 />
