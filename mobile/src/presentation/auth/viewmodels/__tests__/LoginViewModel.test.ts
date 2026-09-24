@@ -33,6 +33,10 @@ describe('LoginViewModel', () => {
           phone: '123456789',
         };
       },
+      // Aquí está el método integrado para cumplir con el contrato:
+      async getUsers() {
+        return [];
+      },
     };
 
     const sessionRepository: SessionRepository = {

@@ -23,6 +23,9 @@ describe('FakeStoreUserRepository', () => {
           phone: '123456789',
         };
       },
+      async getUsers() {
+        return [];
+      },
     };
 
     const repository = new FakeStoreUserRepository(remoteDataSource);
