@@ -29,3 +29,4 @@ export const useUsersViewModel = (getUsersUseCase: GetUsersUseCase): UsersViewMo
 
   return { users, loading, error, loadUsers };
 };
+
