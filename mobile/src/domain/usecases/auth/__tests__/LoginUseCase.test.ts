@@ -19,7 +19,7 @@ describe('LoginUseCase', () => {
   it('authenticates, resolves the role and persists the session', async () => {
     const credentials: LoginCredentials = {
       username: 'johnd',
-      password: 'm38rmF$',
+      password: 'm38rmf$',
     };
 
     const token: AuthToken = {
@@ -49,32 +49,35 @@ describe('LoginUseCase', () => {
 
         return user;
       },
+      async getUsers() {
+        return [];
+      },
     };
 
     let persistedSession: UserSession | null = null;
 
     const sessionRepository: SessionRepository = {
-      async getCurrent() {
-        return persistedSession;
-      },
-
       async save(session) {
         persistedSession = session;
       },
-
+      async getCurrent() {
+        return persistedSession;
+      },
       async clear() {
         persistedSession = null;
       },
     };
 
-    const useCase = new LoginUseCase(
+    const userRoleResolver = new IdBasedUserRoleResolver();
+
+    const loginUseCase = new LoginUseCase(
       authRepository,
       userRepository,
       sessionRepository,
-      new IdBasedUserRoleResolver(),
+      userRoleResolver,
     );
 
-    const result = await useCase.execute(credentials);
+    const result = await loginUseCase.execute(credentials);
 
     expect(result).toEqual({
       token,
@@ -82,6 +85,10 @@ describe('LoginUseCase', () => {
       role: UserRole.ADMIN,
     });
 
-    expect(persistedSession).toEqual(result);
+    expect(persistedSession).toEqual({
+      token,
+      user,
+      role: UserRole.ADMIN,
+    });
   });
 });

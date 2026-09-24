@@ -1,3 +1,4 @@
+import { Cart } from '../entities/Cart';
 import { CartItem } from '../entities/CartItem';
 import { Product } from '../entities/Product';
 
@@ -7,4 +8,5 @@ export interface CartRepository {
   updateQuantity(productId: string | number, quantity: number): Promise<CartItem[]>;
   removeFromCart(productId: string | number): Promise<CartItem[]>;
   clearCart(): Promise<void>;
+  getAllCarts(): Promise<Cart[]>;
 }
